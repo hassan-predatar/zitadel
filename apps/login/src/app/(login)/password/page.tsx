@@ -1,6 +1,6 @@
 import { Alert } from "@/components/alert";
-import { DynamicTheme } from "@/components/dynamic-theme";
 import { PasswordForm } from "@/components/password-form";
+import { PredatarLoginnameLayout } from "@/components/predatar-loginname-layout";
 import { Translated } from "@/components/translated";
 import { UserAvatar } from "@/components/user-avatar";
 import { getServiceConfig } from "@/lib/service-url";
@@ -32,7 +32,6 @@ export default async function Page(props: { searchParams: Promise<Record<string 
     }
   }
 
-  // also allow no session to be found (ignoreUnkownUsername)
   let sessionFactors;
   try {
     sessionFactors = await loadMostRecentSession({
@@ -43,11 +42,10 @@ export default async function Page(props: { searchParams: Promise<Record<string 
       },
     });
   } catch (error) {
-    // ignore error to continue to show the password form
     console.warn(error);
   }
 
-  const branding = await getBrandingSettings({
+  await getBrandingSettings({
     serviceConfig,
     organization: organization ?? sessionFactors?.factors?.user?.organizationId ?? defaultOrganization,
   });
@@ -57,29 +55,23 @@ export default async function Page(props: { searchParams: Promise<Record<string 
   });
 
   return (
-    <DynamicTheme branding={branding}>
-      <div className="flex flex-col space-y-4">
-        <h1>
-          <Translated i18nKey="verify.title" namespace="password" />
-        </h1>
-        <p className="ztdl-p">
-          <Translated i18nKey="verify.description" namespace="password" />
-        </p>
-
-        {sessionFactors ? (
-          <UserAvatar
-            loginName={loginName ?? sessionFactors.factors?.user?.loginName}
-            displayName={sessionFactors.factors?.user?.displayName}
-            showDropdown
-            searchParams={searchParams}
-          ></UserAvatar>
-        ) : loginName ? (
-          <UserAvatar loginName={loginName} displayName={loginName} showDropdown searchParams={searchParams}></UserAvatar>
-        ) : null}
-      </div>
-
+    <PredatarLoginnameLayout heading="Enter your password" subheading="Welcome back — please confirm it's you.">
       <div className="w-full">
-        {/* show error only if usernames should be shown to be unknown */}
+        {sessionFactors ? (
+          <div className="mb-4">
+            <UserAvatar
+              loginName={loginName ?? sessionFactors.factors?.user?.loginName}
+              displayName={sessionFactors.factors?.user?.displayName}
+              showDropdown
+              searchParams={searchParams}
+            ></UserAvatar>
+          </div>
+        ) : loginName ? (
+          <div className="mb-4">
+            <UserAvatar loginName={loginName} displayName={loginName} showDropdown searchParams={searchParams}></UserAvatar>
+          </div>
+        ) : null}
+
         {(!sessionFactors || !loginName) && !loginSettings?.ignoreUnknownUsernames && (
           <div className="py-4">
             <Alert>
@@ -92,12 +84,12 @@ export default async function Page(props: { searchParams: Promise<Record<string 
           <PasswordForm
             loginName={loginName}
             requestId={requestId}
-            organization={organization} // stick to "organization" as we still want to do user discovery based on the searchParams not the default organization, later the organization is determined by the found user
+            organization={organization}
             defaultOrganization={defaultOrganization}
             loginSettings={loginSettings}
           />
         )}
       </div>
-    </DynamicTheme>
+    </PredatarLoginnameLayout>
   );
 }

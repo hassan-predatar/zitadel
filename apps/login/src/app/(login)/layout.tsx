@@ -68,10 +68,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <BackgroundWrapper
                   className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center`}
                 >
-                  <div className="relative mx-auto w-full max-w-[1100px] py-8">
-                    <div>{children}</div>
-                    <div className="mx-auto flex max-w-[440px] flex-row items-center justify-end space-x-4 px-4 py-4 md:max-w-full md:px-8">
+                  <div className="relative w-full">{children}</div>
+                  <div className="pointer-events-none fixed right-4 bottom-4 z-50 flex flex-row items-center space-x-4">
+                    <div className="pointer-events-auto">
                       <LanguageSwitcher languages={languages} />
+                    </div>
+                    <div className="pointer-events-auto">
                       <ThemeSwitch />
                     </div>
                   </div>

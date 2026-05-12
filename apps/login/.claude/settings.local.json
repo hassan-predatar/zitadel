@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($env:ZITADEL_SERVICE_USER_TOKEN = \\(Get-Content C:\\\\zitadel\\\\login-client.pat -Raw\\).Trim\\(\\); $env:HOSTNAME = \"127.0.0.1\"; Push-Location \"D:\\\\PredatarData\\\\Zitadel\\\\LoginPageApp\\\\zitadel\\\\apps\\\\login\"; npx next dev 2>&1)",
+      "PowerShell(Get-Process -Name \"node\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(\"stopped\")"
+    ]
+  }
+}
