@@ -1,0 +1,52 @@
+# Version control
+.git
+.github
+.devcontainer
+.codecov
+
+# Nx cache
+.nx
+
+# Go source — not needed for the JS/TS login build
+backend
+cmd
+internal
+pkg
+statik
+openapi
+proto
+main.go
+go.mod
+go.sum
+*.go
+
+# Node modules — reinstalled fresh inside Docker
+node_modules
+**/node_modules
+
+# Build artefacts
+**/.next
+**/dist
+
+# Angular console — exclude source but keep package.json for pnpm workspace
+console
+!console/package.json
+
+# Tests — exclude source but keep package.json for pnpm workspace
+tests
+!tests/functional-ui/package.json
+
+# Benchmark (excluded from pnpm workspace anyway)
+benchmark
+
+# Misc docs and config not needed in the image
+*.md
+.cursorrules
+.gitattributes
+.gitignore
+.golangci.yaml
+buf.gen.yaml
+buf.work.yaml
+changelog.config.js
+.releaserc.js
+AGENTS.md
