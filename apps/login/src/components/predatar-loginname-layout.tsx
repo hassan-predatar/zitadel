@@ -23,6 +23,7 @@ async function fetchBackgroundImage(): Promise<BackgroundImageResponse | null> {
   try {
     const res = await fetch(url, {
       next: { revalidate: process.env.NODE_ENV === "development" ? 0 : 3600 },
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) {
       console.warn("[PredatarLayout] API responded with status:", res.status);
@@ -73,7 +74,6 @@ export async function PredatarLoginnameLayout({
             backgroundColor: "#181d25",
           }}
         >
-          {/* Background image — loaded client-side to avoid hydration mismatch */}
           <PredatarBackground imageUrl={backgroundImageUrl} />
 
           {/* Dark overlay */}
